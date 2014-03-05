@@ -1,10 +1,10 @@
 #= require Splash
-#= require Dance
+#= require Arena
 
-RockVomit = window.RockVomit
+LightRider = window.LightRider
 
-Splash = RockVomit.Splash
-Dance = RockVomit.Dance
+Splash = LightRider.Splash
+Arena = LightRider.Arena
 
 class Main extends Phaser.State
   constructor:(@parent='')->
@@ -20,20 +20,20 @@ class Main extends Phaser.State
   preload:->  
     @game.stage.disableVisibilityChange=true
 
-    @game.stage.scale.pageAlignHorizontally = true
-    @game.stage.scale.pageAlignVertically = false
-    @game.stage.scale.setShowAll()
-    @game.stage.scale.refresh()
+    @game.scale.pageAlignHorizontally = true
+    @game.scale.pageAlignVertically = false
+    @game.scale.setShowAll()
+    @game.scale.refresh()
 
-    @game.stage.scale.enterLandscape.add =>
-      @game.stage.scale.setShowAll()
-      @game.stage.scale.refresh()
+    @game.scale.enterLandscape.add =>
+      @game.scale.setShowAll()
+      @game.scale.refresh()
 
-    @game.stage.scale.enterPortrait.add =>
-      @game.stage.scale.setShowAll()
-      @game.stage.scale.refresh()
+    @game.scale.enterPortrait.add =>
+      @game.scale.setShowAll()
+      @game.scale.refresh()
 
-    message = "=== R O C K V O M I T ===\nis\nLOADING"
+    message = "=== L I G H T R I D E R ===\nis\nLOADING"
     style =
       font: "30px Courier"
       fill: "#00ff44"
@@ -47,7 +47,7 @@ class Main extends Phaser.State
 
     @game.load.onLoadComplete.addOnce(@ready)
     @game.state.add('splash', new Splash(), false)
-    @game.state.add('dance', new Dance(), false)
+    @game.state.add('arena', new Arena(), false)
     @game.load.image('labs', 'images/labs.png')
 
   loadRender:->
@@ -67,10 +67,10 @@ class Main extends Phaser.State
     @game.state.start('splash')
 
   tweet:(message, follow)->
-    url = encodeURI("http://rockvomit.com/")
+    url = encodeURI("http://lightrider.com/")
     message = encodeURI(message)
     related = encodeURI(follow.toString())
-    @openWindow("https://twitter.com/intent/tweet?text=#{message}&hashtags=rockvomit&url=#{url}&related=#{related}&")
+    @openWindow("https://twitter.com/intent/tweet?text=#{message}&hashtags=lightrider&url=#{url}&related=#{related}&")
 
   openWindow:(url)->
     windowOptions = "scrollbars=yes,resizable=yes,toolbar=no,location=yes"
@@ -82,4 +82,4 @@ class Main extends Phaser.State
       top = Math.round((screen.height / 2) - (height / 2))
     window.open(url, 'intent', "#{windowOptions},width=#{width},height=#{height},left=#{left},top=#{top}")
 
-RockVomit.Main = Main
+LightRider.Main = Main

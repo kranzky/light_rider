@@ -1,4 +1,4 @@
-RockVomit = window.RockVomit
+LightRider = window.LightRider
 
 class Splash extends Phaser.State
   constructor:->
@@ -27,6 +27,6 @@ class Splash extends Phaser.State
     destroy(@labs)
 
   done:=>
-    @game.state.start('dance')
+    @game.state.start('arena')
 
-RockVomit.Splash = Splash
+LightRider.Splash = Splash

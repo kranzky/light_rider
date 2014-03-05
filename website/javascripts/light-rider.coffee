@@ -4,4 +4,4 @@
 #= require pubnub.min
 #= require alertify.min
 #= require phaser.min
-#= require RockVomit
+#= require LightRider

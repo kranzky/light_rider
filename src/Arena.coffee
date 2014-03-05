@@ -1,6 +1,6 @@
-RockVomit = window.RockVomit
+LightRider = window.LightRider
 
-class Dance extends Phaser.State
+class Arena extends Phaser.State
   constructor:->
 
   preload:->
@@ -15,4 +15,4 @@ class Dance extends Phaser.State
   done:=>
     @game.state.start('splash')
 
-RockVomit.Dance = Dance
+LightRider.Arena = Arena

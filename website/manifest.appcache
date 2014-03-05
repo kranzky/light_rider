@@ -1,5 +1,7 @@
 CACHE MANIFEST
 
+# LightRider v001
+
 NETWORK:
 *
 
@@ -7,8 +9,8 @@ CACHE:
 index.html
 offline.html
 404.html
-stylesheets/rock-vomit.css
-javascripts/rock-vomit.js
+stylesheets/light-rider.css
+javascripts/light-rider.js
 images/labs.png
 
 FALLBACK:
