@@ -1,0 +1,15 @@
+CACHE MANIFEST
+
+NETWORK:
+*
+
+CACHE:
+index.html
+offline.html
+404.html
+stylesheets/rock-vomit.css
+javascripts/rock-vomit.js
+images/labs.png
+
+FALLBACK:
+/ offline.html
