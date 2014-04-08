@@ -21,9 +21,6 @@ class Arena extends Phaser.State
     @square.alpha = 0.045
 
     @photons = @game.add.group()
-    @_addPhoton(128, 400, 225, 200, 0, 0xff0000)
-    @_addPhoton(128, 400, 225, -200, 0, 0x00ff00)
-    @_addPhoton(128, 400, 225, 0, 200, 0x0000ff)
 
     key = @game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR)
     key.onDown.add(@_split)
@@ -33,37 +30,65 @@ class Arena extends Phaser.State
     @buffer.renderXY(@game.stage, 0, 0, false)
 
   update:->
+    @_init() if @photons.countLiving() < 4
 
   destroy:->
 
   done:=>
     @game.state.start('splash')
 
+  _init:->
+    @_addPhoton(64, 400, 225, 100, 0, 0xff0000)
+    @_addPhoton(64, 400, 225, -100, 0, 0x00ff00)
+    @_addPhoton(64, 400, 225, 0, 100, 0xff00ff)
+    @_addPhoton(64, 400, 225, 0, -100, 0x00ffff)
+
   _split:=>
-    console.log(@photons)
+    return if @photons.countLiving() > 500
+    spawn = [] 
+    @photons.forEach (photon)=>
+      data =
+        r: photon.width
+        x: photon.x
+        y: photon.y
+        vx: photon.body.velocity.x
+        vy: photon.body.velocity.y
+        colour: photon.tint
+      spawn.push(data)
+      photon.kill()
+    @photons.removeAll()
+    for data in spawn
+      @_addPhoton(data.r * 0.5, data.x, data.y, -data.vx, -data.vy, data.colour)
+      @_addPhoton(data.r * 0.5, data.x, data.y, data.vy, data.vx, data.colour)
+      @_addPhoton(data.r * 0.5, data.x, data.y, -data.vy, -data.vx, data.colour)
 
   _addPhoton:(r, x, y, vx, vy, colour)->
-    circle = @game.add.sprite(x, y, 'circle')
-    @game.physics.enable(circle, Phaser.Physics.ARCADE)
-    circle.width = r
-    circle.height = r
-    circle.anchor.x = 0.5
-    circle.anchor.y = 0.5
-    circle.body.velocity.x = vx
-    circle.body.velocity.y = vy
-    circle.tint = colour
-    circle.blendMode = Phaser.blendModes.SCREEN
-    circle.checkWorldBounds = true
-    circle.events.onOutOfBounds.add (obj)->
-      if vx > 0
-        obj.x = -r
-      if vx < 0
-        obj.x = 800 + r
-      if vy > 0
-        obj.y = -r
-      if vy < 0
-        obj.y = 450 + r
+    r = 4 if r < 4
+    photon = @game.add.sprite(x, y, 'circle')
+    @game.physics.enable(photon, Phaser.Physics.ARCADE)
+    photon.width = r
+    photon.height = r
+    photon.anchor.x = 0.5
+    photon.anchor.y = 0.5
+    photon.body.velocity.x = vx
+    photon.body.velocity.y = vy
+    photon.tint = colour
+    photon.blendMode = Phaser.blendModes.SCREEN
+    photon.checkWorldBounds = true
+    photon.events.onOutOfBounds.add (obj)=>
+      @photons.remove(obj)
+      obj.kill()
 
-    @photons.add(circle)
+    @photons.add(photon)
+
+  _wrap:(photon)->
+    if photon.x > 800 && photon.body.velocity.x > 0
+      photon.x = -photon.width
+    if photon.x < 0 && photon.body.velocity.x < 0
+      photon.x = 800 + photon.width
+    if photon.y > 450 && photon.body.velocity.y > 0
+      photon.y = -photon.height
+    if photon.y < 0 && photon.body.velocity.y < 0
+      photon.y = 450 + photon.height
 
 LightRider.Arena = Arena
