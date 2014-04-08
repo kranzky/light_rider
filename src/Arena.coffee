@@ -55,10 +55,7 @@ class Arena extends Phaser.State
         vy: photon.body.velocity.y
         colour: photon.tint
       spawn.push(data)
-      photon.kill()
-    @photons.removeAll()
     for data in spawn
-      @_addPhoton(data.r * 0.5, data.x, data.y, -data.vx, -data.vy, data.colour)
       @_addPhoton(data.r * 0.5, data.x, data.y, data.vy, data.vx, data.colour)
       @_addPhoton(data.r * 0.5, data.x, data.y, -data.vy, -data.vx, data.colour)
 
