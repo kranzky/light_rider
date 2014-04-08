@@ -1,0 +1,19 @@
+CACHE MANIFEST
+
+# LightRider v002
+
+NETWORK:
+*
+
+CACHE:
+index.html
+offline.html
+404.html
+stylesheets/light-rider.css
+javascripts/light-rider.js
+images/labs.png
+images/circle.png
+images/square.png
+
+FALLBACK:
+/ offline.html
