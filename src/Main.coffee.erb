@@ -11,7 +11,7 @@ class Main extends Phaser.State
 
   run:(debug = false)->
     mode = if debug then Phaser.CANVAS else Phaser.AUTO
-    new Phaser.Game(896, 504, mode, @parent, this)
+    new Phaser.Game(800, 450, mode, @parent, this)
 
   destroy:->
     destroy(@text)
@@ -46,9 +46,13 @@ class Main extends Phaser.State
     @graphics.drawRect(199, 339, 502, 22)
 
     @game.load.onLoadComplete.addOnce(@ready)
+
     @game.state.add('splash', new Splash(), false)
     @game.state.add('arena', new Arena(), false)
+
     @game.load.image('labs', 'images/labs.png')
+    @game.load.image('circle', 'images/circle.png')
+    @game.load.image('square', 'images/square.png')
 
   loadRender:->
     @graphics.beginFill(0x00ff44)
