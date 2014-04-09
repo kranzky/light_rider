@@ -18,7 +18,7 @@ class Arena extends Phaser.State
     @square.height = 450
     @square.anchor.x = 0.5
     @square.anchor.y = 0.5
-    @square.alpha = 0.045
+    @square.alpha = 0.02
 
     @photons = @game.add.group()
 
@@ -30,7 +30,7 @@ class Arena extends Phaser.State
     @buffer.renderXY(@game.stage, 0, 0, false)
 
   update:->
-    @_init() if @photons.countLiving() < 4
+    @_init() if @photons.countLiving() < 3
 
   destroy:->
 
@@ -38,10 +38,9 @@ class Arena extends Phaser.State
     @game.state.start('splash')
 
   _init:->
-    @_addPhoton(64, 400, 225, 100, 0, 0xff0000)
-    @_addPhoton(64, 400, 225, -100, 0, 0x00ff00)
-    @_addPhoton(64, 400, 225, 0, 100, 0xff00ff)
-    @_addPhoton(64, 400, 225, 0, -100, 0x00ffff)
+    @_addPhoton(128, 400, 225, 100, 0, 0xff0000)
+    @_addPhoton(128, 400, 225, -100, 0, 0x00ff00)
+    @_addPhoton(128, 400, 225, 0, 100, 0x0000ff)
 
   _split:=>
     return if @photons.countLiving() > 512
@@ -60,7 +59,7 @@ class Arena extends Phaser.State
       @_addPhoton(data.r * 0.5, data.x, data.y, -data.vy, -data.vx, data.colour)
 
   _addPhoton:(r, x, y, vx, vy, colour)->
-    r = 16 if r < 16
+    r = 32 if r < 32
     photon = @game.add.sprite(x, y, 'circle')
     @game.physics.enable(photon, Phaser.Physics.ARCADE)
     photon.width = r
@@ -77,6 +76,7 @@ class Arena extends Phaser.State
       obj.destroy()
     photon.checkWorldBounds = true
     photon.events.onOutOfBounds.add (obj)=>
+      obj.kill()
       @photons.remove(obj)
 
     @photons.add(photon)
