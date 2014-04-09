@@ -44,7 +44,7 @@ class Arena extends Phaser.State
     @_addPhoton(64, 400, 225, 0, -100, 0x00ffff)
 
   _split:=>
-    return if @photons.countLiving() > 500
+    return if @photons.countLiving() > 512
     spawn = [] 
     @photons.forEach (photon)=>
       data =
@@ -60,7 +60,7 @@ class Arena extends Phaser.State
       @_addPhoton(data.r * 0.5, data.x, data.y, -data.vy, -data.vx, data.colour)
 
   _addPhoton:(r, x, y, vx, vy, colour)->
-    r = 4 if r < 4
+    r = 16 if r < 16
     photon = @game.add.sprite(x, y, 'circle')
     @game.physics.enable(photon, Phaser.Physics.ARCADE)
     photon.width = r
@@ -71,10 +71,13 @@ class Arena extends Phaser.State
     photon.body.velocity.y = vy
     photon.tint = colour
     photon.blendMode = Phaser.blendModes.SCREEN
+    fade = @game.add.tween(photon)
+    fade.to({ alpha: 0 }, 5000, Phaser.Easing.Linear.None, true)
+    fade.onComplete.add (obj)=>
+      obj.destroy()
     photon.checkWorldBounds = true
     photon.events.onOutOfBounds.add (obj)=>
       @photons.remove(obj)
-      obj.kill()
 
     @photons.add(photon)
 
